@@ -176,3 +176,44 @@ class Kasir(BisaPenjualan):
 class Manager(BisaLaporan, BisaRekrut):
     def buat_laporan(self): return "Laporan Q4"
     def rekrut_karyawan(self): return "Hiring!"
+
+#dip
+#anti pattern
+import sqlite3
+
+class DatabaseSQLite:
+    def simpan(self, data):
+        conn = sqlite3.connect("toko.db")
+        # ... insert SQL ...
+
+class LayananProduk:
+    def __init__(self):
+        self.db = DatabaseSQLite()
+
+    def tambah_produk(self, nama, harga):
+        self.db.simpan({"nama": nama, "harga": harga})
+
+#pattern
+from abc import ABC, abstractmethod
+
+class StorageProduk(ABC):
+    @abstractmethod
+    def simpan(self, data: dict): ...
+
+# Implementasi konkret
+class StorageSQLite(StorageProduk):
+    def simpan(self, data):
+        pass  # SQLite logic
+
+class StoragePostgres(StorageProduk):
+    def simpan(self, data):
+        pass  # PostgreSQL logic
+
+class StorageMemori(StorageProduk): 
+    def simpan(self, data): self.data = data
+
+class LayananProduk:
+    def __init__(self, storage: StorageProduk):
+        self.storage = storage  # inject!
+
+svc = LayananProduk(StoragePostgres())
