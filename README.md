@@ -1,5 +1,6 @@
 
 # Tugas Pemrograman Berbasis Objek / OOP
+**Materi SOLID**
 
 ## Anggota Kelompok :
 * **Devon Falen Pasae | 2409106055**
