@@ -69,7 +69,7 @@ class KalkulatorDiskon:
         if tipe_member == "reguler": return harga * 0.95
         elif tipe_member == "silver": return harga * 0.90
         elif tipe_member == "gold":   return harga * 0.80
-        # menambah tipe baru? harus ubah method ini!
+        # untuk menambah tipe member baru, harus mengubah method
 ```
 
 **Masalah:** Setiap kali ada tipe member baru, kode lama harus dimodifikasi — berisiko memunculkan bug pada logika yang sudah berjalan.
