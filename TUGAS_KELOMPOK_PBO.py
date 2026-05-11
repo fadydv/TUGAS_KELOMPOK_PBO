@@ -1,36 +1,45 @@
+#srp
 # anti-pattern
-class Lipstik:
-    def __init__(self, merk, shade, harga):
-        self.merk = merk
-        self.shade = shade
-        self.harga = harga
+class SistemPerpustakaan:
+    def __init__(self, nama, isbn, stok):
+        self.nama = nama
+        self.isbn = isbn
+        self.stok = stok
 
-    def hitung_harga_diskon(self, persen):
-        return self.harga - (self.harga * persen / 100)
+    def cari_buku(self, keyword):
+        return f"Mencari: {keyword}"
 
-    def simpan_ke_mysql(self):
-        print(f"Menyimpan {self.merk} {self.shade} ke tabel lipstik")
+    def cetak_label(self):
+        return f"Label: {self.isbn}"
 
-    def cetak_label_harga(self):
-        print(f"Produk: {self.merk}")
-        print(f"Warna : {self.shade}")
+    def kirim_notifikasi(self, email):
+        pass  # SMTP logic
+
+    def simpan_ke_db(self):
+        pass  # SQL logic
+
+    def buat_laporan_pdf(self):
+        pass  # PDF logic
         
 #pattern
-class Lipstik:
-    def __init__(self, merk, shade, harga):
-        self.merk = merk
-        self.shade = shade
-        self.harga = harga
+class Buku:
+    def __init__(self, nama, isbn, stok):
+        self.nama = nama
+        self.isbn = isbn
+        self.stok = stok
 
-class KalkulatorHarga:
-    @staticmethod
-    def diskon_promo(lipstik, persen):
-        return lipstik.harga - (lipstik.harga * persen / 100)
+class KatalogBuku:
+    def cari(self, keyword: str) -> list:
+        return []  # logic pencarian
 
-class LipstikRepository:
-    def simpan(self, lipstik):
-        print(f"SQL: INSERT INTO lipstik VALUES ('{lipstik.merk}', '{lipstik.shade}')")
+class PencetakLabel:
+    def cetak(self, buku: Buku) -> str:
+        return f"Label: {buku.isbn}"
 
-class PrinterKatalog:
-    def cetak_katalog(self, lipstik):
-        print(f"Menampilkan katalog: {lipstik.merk} - {lipstik.shade}")
+class NotifikasiEmail:
+    def kirim(self, email: str, pesan: str):
+        pass  # SMTP logic
+
+class RepositoriBuku:
+    def simpan(self, buku: Buku):
+        pass  # SQL logic
