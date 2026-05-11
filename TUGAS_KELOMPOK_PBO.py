@@ -86,6 +86,93 @@ class KalkulatorDiskon:
 
 #lsp
 #anti-pattern
+class Kendaraan:
+    def isi_bbm(self, liter: float):
+        return f"Isi {liter}L bensin"
 
+    def nyalakan_mesin(self):
+        return "Vroom!"
+
+class MobilListrik(Kendaraan):
+    def isi_bbm(self, liter):
+        # EV tidak pakai BBM
+        raise NotImplementedError(
+            "Mobil listrik tidak isi BBM"
+        )
+
+# Kode ini crash jika dapat MobilListrik
+def perjalanan(kendaraan: Kendaraan):
+    kendaraan.isi_bbm(40)  # CRASH!
+    kendaraan.nyalakan_mesin()
 
 #pattern
+from abc import ABC, abstractmethod
+
+class Kendaraan(ABC):
+    @abstractmethod
+    def nyalakan_mesin(self) -> str: ...
+    @abstractmethod
+    def isi_energi(self, jumlah: float) -> str: ...
+
+class KendaraanBBM(Kendaraan):
+    def nyalakan_mesin(self): return "Vroom!"
+    def isi_energi(self, liter):
+        return f"Isi {liter}L bensin"
+
+class KendaraanListrik(Kendaraan):
+    def nyalakan_mesin(self): return "Siuuuu..."
+    def isi_energi(self, kwh):
+        return f"Charge {kwh} kWh"
+
+# Aman, karena semua subclass punya isi_energi
+def perjalanan(kendaraan: Kendaraan):
+    kendaraan.isi_energi(40)  # tidak crash
+    kendaraan.nyalakan_mesin()
+
+#isp
+#anti-pattern
+class PegawaiToko(ABC):
+    def jual_produk(self): ...
+    def atur_stok(self): ...
+    def buat_laporan(self): ...
+    def kelola_keuangan(self): ...
+    def rekrut_karyawan(self): ...
+
+class Kasir(PegawaiToko):
+    def jual_produk(self): return "Transaksi"
+    def atur_stok(self):
+        raise NotImplementedError("Kasir bukan gudang!")
+    def buat_laporan(self):
+        raise NotImplementedError("Kasir bukan manager!")
+    def kelola_keuangan(self):
+        raise NotImplementedError("Bukan HRD!")
+    def rekrut_karyawan(self):
+        raise NotImplementedError("Bukan HRD!")
+
+#pattern
+from abc import ABC, abstractmethod
+
+class BisaPenjualan(ABC):
+    @abstractmethod
+    def jual_produk(self): ...
+
+class BisaStok(ABC):
+    @abstractmethod
+    def atur_stok(self): ...
+
+class BisaLaporan(ABC):
+    @abstractmethod
+    def buat_laporan(self): ...
+
+class BisaRekrut(ABC):
+    @abstractmethod
+    def rekrut_karyawan(self): ...
+
+# kasir hanya implement yang relevan
+class Kasir(BisaPenjualan):
+    def jual_produk(self): return "Transaksi!"
+
+# manager implement semua yang diperlukan
+class Manager(BisaLaporan, BisaRekrut):
+    def buat_laporan(self): return "Laporan Q4"
+    def rekrut_karyawan(self): return "Hiring!"
